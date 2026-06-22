@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>实时数据监听</title>
+</head>
+<body>
+    <h2>实时数据（练习一）</h2>
+    <div id="messages" style="font-family:monospace;"></div>
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>//导入mqtt包
+    <script>
+        const client =mqtt.connect('ws://127.0.0.1:8083/mqtt');
+        client.on('connect',()=>{
+            console.log('已连接到 MQTT Broker');
+            client.subscribe('data/number',(err)=>{
+                if(!err){
+                    console.log("订阅成功");
+                }
+            });
+        });
+        client.on('message',(topic,message)=>{
+            const msgStr=message.toString();
+            const div=document.getElementById('messages');
+            div.innerHTML+=`<p>${topic}:${msgStr}</p>`;
+            div.scrollTop=div.scrollHeight;
+        })
+    </script>
+</body>
+</html>

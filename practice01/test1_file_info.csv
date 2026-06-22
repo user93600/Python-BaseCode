@@ -1,0 +1,10 @@
+﻿file_path,file_name,file_size,file_ctime
+D:\ai-text-detection-project-main\src\app.py,app.py,500,2026-05-05/07/26 03:03:30
+D:\ai-text-detection-project-main\src\data_cleaning.py,data_cleaning.py,2552,2026-05-05/07/26 03:03:30
+D:\ai-text-detection-project-main\src\feature_extraction.py,feature_extraction.py,1923,2026-05-05/07/26 03:03:30
+D:\ai-text-detection-project-main\src\models_evaluate.py,models_evaluate.py,5204,2026-05-05/07/26 03:03:30
+D:\ai-text-detection-project-main\src\models_predict.py,models_predict.py,2717,2026-05-05/07/26 03:03:30
+D:\ai-text-detection-project-main\src\models_train.py,models_train.py,7208,2026-05-05/07/26 03:03:30
+D:\ai-text-detection-project-main\src\__pycache__\data_cleaning.cpython-310.pyc,data_cleaning.cpython-310.pyc,1656,2026-05-05/07/26 19:49:27
+D:\ai-text-detection-project-main\src\__pycache__\data_cleaning.cpython-314.pyc,data_cleaning.cpython-314.pyc,3024,2026-05-05/07/26 21:25:11
+D:\ai-text-detection-project-main\src\__pycache__\models_predict.cpython-314.pyc,models_predict.cpython-314.pyc,3667,2026-05-05/07/26 21:25:10
