@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>实时监控面板</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <style>
+        body {font-family: Arial;margin:20px;}
+        #chart-container {width:800px;height:400px;}
+    </style>
+</head>
+<body>
+    <h2>实时监控数据（最近20个数据点）</h2>
+    <div id="chart-container">
+        <canvas id="realtimeChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('realtimeChart').getContext('2d');
+        const chart=new Chart(ctx,{
+            type:'line',
+            data:{
+                labels:[],//x轴标签
+                datasets:[{
+                    lable:'随机数值',
+                    data:[],
+                    borderColor:'limegreen',
+                    borderWidth:2,
+                    pointRadius:0,//不显示数据点
+                    fill:false
+                }]
+            },
+            options:{
+                responsive:true,
+                animation:false,//关闭动画
+                scales:{
+                    y:{min:0,max:100}
+                }
+            }
+        });
+
+        function addData(value){
+            const now=new Date().toLocaleTimeString();
+            chart.data.labels.push(now);
+            chart.data.datasets[0].data.push(value);
+
+            if (chart.data.labels.length>20){
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+            chart.update();
+        }
+
+        async function loadHistory(){
+            try{
+                const res=await fetch('http://127.0.0.1:5000/api/latest');
+                const records=await res.json();
+                records.forEach(r=>{
+                    addData(r.receive_data);
+                });
+            }
+            catch(err){
+                console.error("加载历史数据失败",err);
+            }
+        }
+
+        loadHistory().then(()=>{
+            const client=mqtt.connect('ws://127.0.0.1:8083/mqtt');
+            client.on('connect',()=>{
+                console.log('MQTT 已连接');
+                client.subscribe('data/number');
+            });
+            client.on('message',(topic,message)=>{
+                const num=parseFloat(message.toString());
+                if(!isNaN(num)){
+                    addData(num);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
